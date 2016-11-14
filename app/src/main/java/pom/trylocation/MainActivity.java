@@ -39,10 +39,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     EditText edAddress;
     @BindView(R.id.bt_calculate)
     Button btCalculate;
-    @BindView(R.id.textView)
-    TextView textView;
+
     @BindView(R.id.activity_main)
     LinearLayout activityMain;
+    @BindView(R.id.tv_answer)
+    TextView tvAnswer;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
 
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         if (mLastLocation != null) {
             String latitude = String.valueOf(mLastLocation.getLatitude());
             String longitude = String.valueOf(mLastLocation.getLongitude());
-            tvLocation.setText(latitude + " " + longitude);
+            tvLocation.setText("your location"+latitude + " " + longitude);
 
         }
     }
@@ -154,6 +155,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             super.onPostExecute(latLng);
             Toast.makeText(getApplicationContext(), latLng.latitude + "  " + latLng.longitude, Toast.LENGTH_SHORT).show();
             Log.d("onPostExecute", latLng.latitude + "  " + latLng.longitude);
+
+            float[] result = new float[5];
+            Location.distanceBetween(mLastLocation.getLatitude(), mLastLocation.getLongitude(), latLng.latitude, latLng.longitude, result);
+
+            tvAnswer.setText(result[0] + "m");
         }
     }
 }
